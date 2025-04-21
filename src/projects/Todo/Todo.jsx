@@ -1,115 +1,205 @@
 import { useState } from "react";
+import { FiEdit2, FiTrash2, FiCheck, FiX } from "react-icons/fi";
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [filter, setFilter] = useState("all");
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
 
-  // function to add new todo
-  const handleAddTodo = () => {
-    if (newTodo.trim() !== "") {
-      console.log("New Todo:", newTodo);
-
-      setTodos([...todos, { text: newTodo, completed: false, id: Date.now() }]);
+  const handleAddTodo = (e) => {
+    e?.preventDefault();
+    if (newTodo.trim()) {
+      setTodos((prevTodos) => [
+        ...prevTodos,
+        { text: newTodo, completed: false, id: Date.now() },
+      ]);
       setNewTodo("");
-    } else {
-      console.log("Input field is empty");
     }
   };
 
-  // function to toggle completed
   const handleToggleCompleted = (id) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, completed: !todo.completed };
-        }
-
-        return todo;
-      })
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
     );
   };
 
-  // function to remove todo
   const handleRemoveTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
+
+  const startEditing = (id, text) => {
+    setEditingId(id);
+    setEditText(text);
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditText("");
+  };
+
+  const saveEdit = (id) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, text: editText } : todo
+      )
+    );
+    setEditingId(null);
   };
 
   const filteredTodos = todos.filter((todo) => {
-    if (filter === "active") return !todo.completed;
-    if (filter === "completed") return todo.completed;
-
-    return true;
+    switch (filter) {
+      case "active":
+        return !todo.completed;
+      case "completed":
+        return todo.completed;
+      default:
+        return true;
+    }
   });
+
+  const filterButtons = [
+    { value: "all", label: "All" },
+    { value: "active", label: "Active" },
+    { value: "completed", label: "Completed" },
+  ];
+
   return (
-    <div className="flex flex-col md:w-[500px] w-[400px]">
-      <h1 className="md:text-3xl mb-4 bg-gradient-to-r from-pink-500 to-purple-500 text-[#f1f1f1] py-2 mx-auto px-4 rounded-md">
-        Todo App using useState Hook
+    <div className="flex flex-col w-full max-w-md mx-auto p-4">
+      <h1 className="text-2xl md:text-3xl mb-6 text-center bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 px-6 rounded-lg shadow">
+        Todo App
       </h1>
 
-      <div className="flex gap-4 flex-col">
-        <form
-          className="flex gap-2 justify-between"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleAddTodo();
-          }}
-        >
+      <div className="flex flex-col gap-4">
+        <form onSubmit={handleAddTodo} className="flex gap-2 w-full">
           <input
             type="text"
-            className="bg-white rounded-md pl-2 outline-none w-3/4"
+            className="flex-grow p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
-            placeholder="Enter your todo here"
+            placeholder="Enter your todo"
+            aria-label="Add new todo"
           />
-
           <button
-            className="bg-blue-400 outline-none  hover:text-white hover:bg-blue-600 py-2 px-4 rounded-md w-1/4"
-            onClick={handleAddTodo}
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors whitespace-nowrap"
           >
-            Add Todo
+            Add
           </button>
         </form>
 
-        {/* List of filteredTodos */}
+        {todos.length > 0 && (
+          <div className="flex gap-2 justify-center">
+            {filterButtons.map(({ value, label }) => (
+              <button
+                key={value}
+                className={`py-1 px-3 rounded transition-colors ${
+                  filter === value
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+                onClick={() => setFilter(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+
         <ul className="flex flex-col gap-2">
-          {filteredTodos.map((todo, index) => (
-            <li
-              key={todo.id}
-              className={`flex justify-between gap-2  text-white rounded-md py-2 px-2 ${
-                index % 2 === 0 ? "bg-purple-500" : "bg-pink-500"
-              } ${todo.completed ? "line-through" : "none"}`}
-            >
-              <span>{index + 1}.</span>
-              <span onClick={() => handleToggleCompleted(todo.id)}>
-                {todo.text}
-              </span>
-              <button onClick={() => handleRemoveTodo(todo.id)}>Remove</button>
+          {filteredTodos.length === 0 ? (
+            <li className="text-center py-4 text-gray-500 bg-gray-100 rounded">
+              {todos.length === 0
+                ? "No todos yet!"
+                : "No todos match this filter"}
             </li>
-          ))}
+          ) : (
+            filteredTodos.map((todo) => (
+              <li
+                key={todo.id}
+                className={`flex items-center justify-between p-3 rounded shadow-sm transition ${
+                  todo.completed ? "bg-green-50" : "bg-white"
+                }`}
+              >
+                <div className="flex items-center gap-3 flex-grow">
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => handleToggleCompleted(todo.id)}
+                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                  />
+
+                  {editingId === todo.id ? (
+                    <input
+                      type="text"
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                      className="flex-grow p-1 border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                      autoFocus
+                    />
+                  ) : (
+                    <span
+                      className={`flex-grow cursor-pointer ${
+                        todo.completed ? "line-through text-gray-500" : ""
+                      }`}
+                      onClick={() => handleToggleCompleted(todo.id)}
+                    >
+                      {todo.text}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex gap-2">
+                  {editingId === todo.id ? (
+                    <>
+                      <button
+                        onClick={() => saveEdit(todo.id)}
+                        className="text-green-500 hover:text-green-700 p-1 rounded hover:bg-green-50 transition-colors"
+                        aria-label="Save edit"
+                      >
+                        <FiCheck size={18} />
+                      </button>
+                      <button
+                        onClick={cancelEditing}
+                        className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
+                        aria-label="Cancel edit"
+                      >
+                        <FiX size={18} />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => startEditing(todo.id, todo.text)}
+                        className="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50 transition-colors"
+                        aria-label="Edit todo"
+                      >
+                        <FiEdit2 size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleRemoveTodo(todo.id)}
+                        className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
+                        aria-label="Remove todo"
+                      >
+                        <FiTrash2 size={18} />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </li>
+            ))
+          )}
         </ul>
 
-        {/* filter buttons */}
-        <div className="flex gap-3 justify-center">
-          <button
-            className="bg-blue-400 hover:text-white hover:bg-blue-600 py-2 px-4 rounded-md"
-            onClick={() => setFilter("all")}
-          >
-            All
-          </button>
-          <button
-            className="bg-blue-400 hover:text-white hover:bg-blue-600 py-2 px-4 rounded-md"
-            onClick={() => setFilter("active")}
-          >
-            Active
-          </button>
-          <button
-            className="bg-blue-400 hover:text-white hover:bg-blue-600 py-2 px-4 rounded-md"
-            onClick={() => setFilter("completed")}
-          >
-            Completed
-          </button>
-        </div>
+        {todos.length > 0 && (
+          <div className="text-center text-sm text-gray-500">
+            {todos.filter((t) => t.completed).length} of {todos.length}{" "}
+            completed
+          </div>
+        )}
       </div>
     </div>
   );

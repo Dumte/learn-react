@@ -23,8 +23,10 @@ DAY 4 - REACT ADVANCE STATE MANAGEMENT WORKSHOP
 4.  <!-- KEY  CONCEPTS FOR THE TODO LIST APPLICATION -->
 a.  spread operator
 b.  filter method
-d.  map method
-e.  conditional statement (if, else, tenary operator)
+c.  map method
+d.  conditional statement (if, else, tenary operator)
 e.  function parameter
 f.  inline function
 g.  input field value
+h.  slice method
+i.  template literals
