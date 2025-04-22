@@ -68,7 +68,7 @@ const Todo = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full max-w-md mx-auto p-4">
+    <div className="flex flex-col w-full max-w-md rounded-md mt-4 mx-auto p-4  bg-blue-100">
       <h1 className="text-2xl md:text-3xl mb-6 text-center bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 px-6 rounded-lg shadow">
         Todo App
       </h1>
@@ -77,7 +77,7 @@ const Todo = () => {
         <form onSubmit={handleAddTodo} className="flex gap-2 w-full">
           <input
             type="text"
-            className="flex-grow p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+            className="flex-grow p-2 rounded border bg-white border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
             placeholder="Enter your todo"
