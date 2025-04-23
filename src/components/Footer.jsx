@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFacebook, FaTwitter } from "react-icons/fa6";
+import { FaFacebook, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -11,18 +11,32 @@ const Footer = () => {
 
         <div className="flex gap-4">
           <a
-            href="https://facebook.com"
+            href="https://facebook.com/dnjosh10"
             aria-label="Facebook"
             className="hover:scale-150 transition-transform"
           >
             <FaFacebook className="text-blue-500 text-xl md:text-2xl" />
           </a>
           <a
-            href="https://twitter.com"
+            href="https://twitter.com/dnjosh10"
             aria-label="Twitter"
             className="hover:scale-150 transition-transform"
           >
             <FaTwitter className="text-blue-400 text-xl md:text-2xl" />
+          </a>
+          <a
+            href="https://github.com/dumte"
+            aria-label="Github"
+            className="hover:scale-150 transition-transform"
+          >
+            <FaGithub className="text-blue-400 text-xl md:text-2xl" />
+          </a>
+          <a
+            href="https://linkedin.com/in/dnjosh10"
+            aria-label="LinkedIn"
+            className="hover:scale-150 transition-transform"
+          >
+            <FaLinkedin className="text-blue-400 text-xl md:text-2xl" />
           </a>
         </div>
       </div>

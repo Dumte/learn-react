@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaTimes, FaBars } from "react-icons/fa";
+import { FaTimes, FaBars } from "react-icons/fa";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +13,7 @@ const Header = () => {
     { path: "/weather", name: "Weather" },
     { path: "/quiz", name: "Quiz" },
     { path: "/gallery", name: "Image Gallery" },
-    { path: "/cart", name: "Cart", icon: <FaShoppingCart /> },
+    { path: "/cart", name: "Shopping Cart" },
   ];
 
   return (
