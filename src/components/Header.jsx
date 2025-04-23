@@ -48,7 +48,7 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Desktop Navigation - Now perfectly centered */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center h-full">
           <ul className="flex items-center gap-4 h-full">
             {navItems.map((item) => (
