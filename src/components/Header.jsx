@@ -57,7 +57,7 @@ const Header = () => {
                   to={item.path}
                   className="hover:text-purple-500 flex items-center gap-1 cursor-pointer py-2 px-3 rounded-md hover:bg-slate-600 transition-colors duration-200 h-full"
                 >
-                  {item.icon && <span>{item.icon}</span>}
+                  {/* {item.icon && <span>{item.icon}</span>} */}
                   <span>{item.name}</span>
                 </Link>
               </li>
@@ -73,10 +73,10 @@ const Header = () => {
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className="hover:text-purple-500 flex items-center gap-3 cursor-pointer py-3 px-4 transition-colors duration-200"
+                    className="hover:text-purple-500 flex items-center gap-3 cursor-pointer py-3 px-4 transition-colors duration-200 hover:bg-purple-300 rounded-md"
                     onClick={toggleMenu}
                   >
-                    {item.icon && <span className="text-lg">{item.icon}</span>}
+                    {/* {item.icon && <span className="text-lg">{item.icon}</span>} */}
                     <span>{item.name}</span>
                   </Link>
                 </li>
