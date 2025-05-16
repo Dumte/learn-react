@@ -23,6 +23,16 @@ const Quiz = () => {
         correctAnswer: "JavaScript XML",
       },
       {
+        question: "When was React created?",
+        options: [
+          "1990",
+          "2005",
+          "2013",
+          "2011",
+        ],
+        correctAnswer: "2013",
+      },
+      {
         question: "Which hook is used to perform side effects in React?",
         options: ["useState", "useEffect", "useContext", "useReducer"],
         correctAnswer: "useEffect",
